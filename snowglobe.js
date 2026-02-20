@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { createSnow, updateSnow } from './snow.js';
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -65,10 +66,15 @@ const glass_sphere = new THREE.Mesh(
 );
 glass_sphere.position.y = 3.5;
 scene.add(glass_sphere);
+createSnow(scene, 3);
+snow.position.y = 3.5;
+const clock = new THREE.Clock();
 
 
 
 function animate() {
+    const deltaTime = clock.getDelta();
+    updateSnow(deltaTime);
     renderer.render(scene, camera);
     controls.update();
 }

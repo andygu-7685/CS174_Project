@@ -45,6 +45,7 @@ export function createSnow(scene, radius) {
   });
 
   snow = new THREE.Points(geometry, material);
+  snow.position.y = 3.5;
   scene.add(snow);
 }
 
