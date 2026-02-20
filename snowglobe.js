@@ -66,16 +66,29 @@ const glass_sphere = new THREE.Mesh(
 );
 glass_sphere.position.y = 3.5;
 scene.add(glass_sphere);
-createSnow(scene, 3);
-snow.position.y = 3.5;
+createSnow(scene, 2.5);
 const clock = new THREE.Clock();
-
+let snowing = true; // Start with snowing
 
 
 function animate() {
     const deltaTime = clock.getDelta();
-    updateSnow(deltaTime);
+    updateSnow(deltaTime, snowing);
     renderer.render(scene, camera);
     controls.update();
 }
 renderer.setAnimationLoop(animate);
+
+
+
+window.addEventListener('keydown', onKeyPress); // onKeyPress is called each time a key is pressed
+// Function to handle keypress
+function onKeyPress(event) {
+    switch (event.key) {
+        case 'r': // Note we only do this if s is pressed.
+            snowing = !snowing;
+            break;
+        default:
+            console.log(`Key ${event.key} pressed`);
+    }
+}

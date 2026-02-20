@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { rand } from 'three/tsl';
 
 let snow; // particle system object
 let velocities = []; // falling speed of each snowflake
@@ -38,6 +39,8 @@ export function createSnow(scene, radius) {
     new THREE.BufferAttribute(positions, 3)
   );
 
+  geometry.userData.isFalling = new Array(particleCount).fill(true);
+
   // Render each vertex as a dot
   const material = new THREE.PointsMaterial({
     color: 0xffffff,
@@ -45,12 +48,12 @@ export function createSnow(scene, radius) {
   });
 
   snow = new THREE.Points(geometry, material);
-  snow.position.y = 3.5;
+  snow.position.y = 3;
   scene.add(snow);
 }
 
 // Call every frame
-export function updateSnow(deltaTime) {
+export function updateSnow(deltaTime, snowing) {
 
   if (!snow) return;
 
@@ -59,15 +62,22 @@ export function updateSnow(deltaTime) {
   for (let i = 0; i < particleCount; i++) {
 
     // Move downward
-    positions[i * 3 + 1] -= velocities[i] * deltaTime;
-
+    if(snow.geometry.userData.isFalling[i]){
+      positions[i * 3 + 1] -= velocities[i] * deltaTime;
+    }
+    
     // Reset to top if below bottom of globe
     if (positions[i * 3 + 1] < -globeRadius) {
-      positions[i * 3 + 1] = globeRadius;
+      if(snowing) {
+        positions[i * 3 + 1] = globeRadius - Math.random(); // Reset above the globe
+        snow.geometry.userData.isFalling[i] = true;
+      }
+      else{
+        snow.geometry.userData.isFalling[i] = false;
+      }
     }
   }
 
   // Refresh particle positions
   snow.geometry.attributes.position.needsUpdate = true;
 }
-
