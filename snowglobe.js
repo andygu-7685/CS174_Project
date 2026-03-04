@@ -14,7 +14,7 @@ controls.target.set(0, 3, 0);
 const point_light = new THREE.PointLight(0xb3d9ff, 1000, 100);
 point_light.position.set(0, 8, 0);
 scene.add(point_light);
-const ambient_light = new THREE.AmbientLight(0x404060);
+const ambient_light = new THREE.AmbientLight(0x8a8a8a);
 scene.add(ambient_light);
 
 const base = new THREE.Mesh(
@@ -37,39 +37,62 @@ const tree_base = new THREE.Mesh(
     new THREE.CylinderGeometry(0.15, 0.2, 0.8, 8),
     new THREE.MeshPhongMaterial({ color: 0x4a2f1a, shininess: 5 })
 );
-tree_base.position.set(0, 1.8, 0);
+tree_base.position.set(-1.2, 1.8, 0.3);
 scene.add(tree_base);
 const crown = new THREE.Mesh(
     new THREE.ConeGeometry(0.8, 1.5, 7),
     new THREE.MeshPhongMaterial({ color: 0x1a4d1a, shininess: 10 })
 );
-crown.position.set(0, 2.9, 0);
+crown.position.set(-1.2, 2.9, 0.3);
 scene.add(crown);
 
 const tree_base2 = new THREE.Mesh(  // one more tree added withthe same dimentions but different coordinates 
-    new THREE.CylinderGeometry(0.15, 0.2, 0.8, 8),
+    new THREE.CylinderGeometry(0.1, 0.15, 0.75, 8),
     new THREE.MeshPhongMaterial({ color: 0x4a2f1a, shininess: 5 })
 );
-tree_base2.position.set(1, 1.8, 0.5);
+tree_base2.position.set(1.2, 1.77, 0.3);
 scene.add(tree_base2);
 
 const crown2 = new THREE.Mesh(
-    new THREE.ConeGeometry(0.8, 1.5, 7),
+    new THREE.ConeGeometry(0.5, 1.0, 7),
     new THREE.MeshPhongMaterial({ color: 0x1a4d1a, shininess: 10 })
 );
-crown2.position.set(1, 2.9, 0.5);
+crown2.position.set(1.2, 2.4, 0.3);
 scene.add(crown2);
+
+const house_walls = new THREE.Mesh( new THREE.BoxGeometry(0.8, 0.6, 0.8),
+    new THREE.MeshPhongMaterial({ color: 0xE3890E, shininess: 5 }) );
+house_walls.position.set(0, 2.1, 0);
+scene.add(house_walls);
+
+
+const house_roof = new THREE.Mesh( new THREE.ConeGeometry(0.7, 0.5, 4),
+    new THREE.MeshPhongMaterial({ color: 0x8b2500, shininess: 5 })
+);
+house_roof.position.set(0, 2.65, 0);
+house_roof.rotation.y = Math.PI / 4; // rotating the roof to align it with the walls walls
+scene.add(house_roof);
+
+const house_door = new THREE.Mesh(
+    new THREE.BoxGeometry(0.2, 0.32, 0.05),
+    new THREE.MeshPhongMaterial({ color: 0x1497F5, shininess: 15 }));
+house_door.position.set(0, 1.93, -0.43);
+scene.add(house_door);
 
 const glass_sphere = new THREE.Mesh(
     new THREE.SphereGeometry(3, 32, 32),
-    new THREE.MeshPhongMaterial({ color: 0xcce5ff, shininess: 100, transparent: true, opacity: 0.2 })
+    new THREE.MeshPhongMaterial({ color: 0xcce5ff, shininess: 100, transparent: true, opacity: 0.2, depthWrite: false })
 );
 glass_sphere.position.y = 3.5;
 scene.add(glass_sphere);
-createSnow(scene, 2.5);
+createSnow(scene, 3);
 const clock = new THREE.Clock();
-let snowing = true; // Start with snowing
 
+
+let snowing = true;
+window.addEventListener('keydown', (event) => {
+    if (event.key === 'r') snowing = !snowing;
+});
 
 function animate() {
     const deltaTime = clock.getDelta();
@@ -78,17 +101,3 @@ function animate() {
     controls.update();
 }
 renderer.setAnimationLoop(animate);
-
-
-
-window.addEventListener('keydown', onKeyPress); // onKeyPress is called each time a key is pressed
-// Function to handle keypress
-function onKeyPress(event) {
-    switch (event.key) {
-        case 'r': // Note we only do this if s is pressed.
-            snowing = !snowing;
-            break;
-        default:
-            console.log(`Key ${event.key} pressed`);
-    }
-}

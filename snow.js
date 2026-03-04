@@ -63,10 +63,11 @@ export function createSnow(scene, radius) {
     map: createSnowflakeTexture(),
     transparent: true,
     depthWrite: false,
-    blending: THREE.AdditiveBlending
+    blending: THREE.NormalBlending 
   });
 
   snow = new THREE.Points(geometry, material);
+  //snow.renderOrder = 1;
   snow.position.y = 3.5;
   scene.add(snow);
 }
