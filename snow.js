@@ -49,25 +49,33 @@ export function createSnow(scene, radius) {
   scene.add(snow);
 }
 
-// Call every frame
+// Call every f
 export function updateSnow(deltaTime) {
-
   if (!snow) return;
 
   const positions = snow.geometry.attributes.position.array;
 
   for (let i = 0; i < particleCount; i++) {
-
-    // Move downward
     positions[i * 3 + 1] -= velocities[i] * deltaTime;
 
-    // Reset to top if below bottom of globe
-    if (positions[i * 3 + 1] < -globeRadius) {
-      positions[i * 3 + 1] = globeRadius;
+    const x = positions[i * 3];
+    const y = positions[i * 3 + 1];
+    const z = positions[i * 3 + 2];
+
+    if (x*x + y*y + z*z > globeRadius * globeRadius) {
+      // Reset to random position in upper half of sphere
+      let nx, ny, nz;
+      do {
+        nx = (Math.random() - 0.5) * globeRadius * 2;
+        ny = Math.random() * globeRadius; // upper half only
+        nz = (Math.random() - 0.5) * globeRadius * 2;
+      } while (nx*nx + ny*ny + nz*nz > globeRadius * globeRadius);
+
+      positions[i * 3] = nx;
+      positions[i * 3 + 1] = ny;
+      positions[i * 3 + 2] = nz;
     }
   }
 
-  // Refresh particle positions
   snow.geometry.attributes.position.needsUpdate = true;
 }
-
