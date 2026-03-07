@@ -57,11 +57,11 @@ const crown2 = new THREE.Mesh(
     new THREE.ConeGeometry(0.5, 1.0, 7),
     new THREE.MeshPhongMaterial({ color: 0x1a4d1a, shininess: 10 })
 );
-crown2.position.set(1.2, 2.55, 0.3);
+crown2.position.set(1.2, 2.4, 0.3);
 scene.add(crown2);
 
 const house_walls = new THREE.Mesh( new THREE.BoxGeometry(0.8, 0.6, 0.8),
-    new THREE.MeshPhongMaterial({ color: 0xF5C414, shininess: 5 }) );
+    new THREE.MeshPhongMaterial({ color: 0xE3890E, shininess: 5 }) );
 house_walls.position.set(0, 2.1, 0);
 scene.add(house_walls);
 
@@ -79,9 +79,30 @@ const house_door = new THREE.Mesh(
 house_door.position.set(0, 1.93, -0.43);
 scene.add(house_door);
 
+const snowPileMaterial = new THREE.MeshPhongMaterial({ color: 0xf0f0ff, shininess: 80 });
+
+const pile1 = new THREE.Mesh(new THREE.SphereGeometry(0.3, 8, 8), snowPileMaterial);
+pile1.scale.y = 0.4;
+pile1.position.set(0.8, 1.35, 0.8);
+scene.add(pile1);
+
+const pile2 = new THREE.Mesh(new THREE.SphereGeometry(0.25, 8, 8), snowPileMaterial);
+pile2.scale.y = 0.4;
+pile2.position.set(-0.7, 1.35, -0.6);
+scene.add(pile2);
+
+const pile3 = new THREE.Mesh(new THREE.SphereGeometry(0.2, 8, 8), snowPileMaterial);
+pile3.scale.y = 0.4;
+pile3.position.set(0.3, 1.35, -0.9);
+scene.add(pile3);
+
+pile1.position.set(0.8, 1.85, 0.8);
+pile2.position.set(-0.7, 1.85, -0.6);
+pile3.position.set(0.3, 1.85, -0.9);
+
 const glass_sphere = new THREE.Mesh(
     new THREE.SphereGeometry(3, 32, 32),
-    new THREE.MeshPhongMaterial({ color: 0xcce5ff, shininess: 100, transparent: true, opacity: 0.2 })
+    new THREE.MeshPhongMaterial({ color: 0xcce5ff, shininess: 100, transparent: true, opacity: 0.2, depthWrite: false })
 );
 glass_sphere.position.y = 3.5;
 scene.add(glass_sphere);
@@ -89,10 +110,14 @@ createSnow(scene, 3);
 const clock = new THREE.Clock();
 
 
+let snowing = true;
+window.addEventListener('keydown', (event) => {
+    if (event.key === 'r') snowing = !snowing;
+});
 
 function animate() {
     const deltaTime = clock.getDelta();
-    updateSnow(deltaTime);
+    updateSnow(deltaTime, snowing);
     renderer.render(scene, camera);
     controls.update();
 }
