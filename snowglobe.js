@@ -145,7 +145,7 @@ const glass_left = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.44, 0.44), windo
 glass_left.position.set(-0.84, 4.3, 0);
 scene.add(glass_left);
 
-// Window crosses
+// Window crosses (house walls)
 const cross_v_right = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.44, 0.06), windowFrame);
 cross_v_right.position.set(0.86, 4.3, 0);
 scene.add(cross_v_right);
@@ -162,6 +162,149 @@ const cross_h_left = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.06, 0.44), win
 cross_h_left.position.set(-0.86, 4.3, 0);
 scene.add(cross_h_left);
 
+const train = new THREE.Group();
+
+//Locomotive 
+const locomotive = new THREE.Mesh(
+    new THREE.BoxGeometry(1.2, 0.6, 0.5),
+    new THREE.MeshPhongMaterial({ color: 0xcc0000, shininess: 40 })
+);
+train.add(locomotive);
+
+// Train chimney
+const train_chimney = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.08, 0.08, 0.4, 8),
+    new THREE.MeshPhongMaterial({ color: 0x222222, shininess: 20 })
+);
+train_chimney.position.set(0.35, 0.45, 0);
+train.add(train_chimney);
+
+// Train windows
+const train_windowMaterial = new THREE.MeshPhongMaterial({ color: 0xffcc44, emissive: 0xffaa00, emissiveIntensity: 0.3, shininess: 80 });
+const loco_win_left = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.15, 0.02), train_windowMaterial);
+loco_win_left.position.set(-0.3, 0.18, 0.27);
+train.add(loco_win_left);
+
+const loco_win_right = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.15, 0.02), train_windowMaterial);
+loco_win_right.position.set(-0.3, 0.18, -0.27);
+train.add(loco_win_right);
+
+// train wheels
+const wheelMat = new THREE.MeshPhongMaterial({ color: 0x111111, shininess: 60 });
+
+const loco_wheel1 = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.05, 10), wheelMat);
+loco_wheel1.rotation.x = Math.PI / 2;
+loco_wheel1.position.set(-0.35, -0.25, 0.28);
+train.add(loco_wheel1);
+
+const loco_wheel2 = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.05, 10), wheelMat);
+loco_wheel2.rotation.x = Math.PI / 2;
+loco_wheel2.position.set(-0.35, -0.25, -0.28);
+train.add(loco_wheel2);
+
+const loco_wheel3 = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.05, 10), wheelMat);
+loco_wheel3.rotation.x = Math.PI / 2;
+loco_wheel3.position.set(0, -0.25, 0.28);
+train.add(loco_wheel3);
+
+const loco_wheel4 = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.05, 10), wheelMat);
+loco_wheel4.rotation.x = Math.PI / 2;
+loco_wheel4.position.set(0, -0.25, -0.28);
+train.add(loco_wheel4);
+
+const loco_whl5 = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.05, 10), wheelMat);
+loco_whl5.rotation.x = Math.PI / 2;
+loco_whl5.position.set(0.35, -0.25, 0.28);
+train.add(loco_whl5);
+
+const loco_whl6 = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.05, 10), wheelMat);
+loco_whl6.rotation.x = Math.PI / 2;
+loco_whl6.position.set(0.35, -0.25, -0.28);
+train.add(loco_whl6);
+
+// Blue Wagon
+const wagon1 = new THREE.Group();
+
+const wagon1_body = new THREE.Mesh(
+    new THREE.BoxGeometry(1.0, 0.55, 0.5),
+    new THREE.MeshPhongMaterial({ color: 0x2255cc, shininess: 40 })
+);
+wagon1.add(wagon1_body);
+
+const wagon1_win_left = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.15, 0.02), train_windowMaterial);
+wagon1_win_left.position.set(0, 0.1, 0.27);
+wagon1.add(wagon1_win_left);
+
+const wagon1_win_right = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.15, 0.02), train_windowMaterial);
+wagon1_win_right.position.set(0, 0.1, -0.27);
+wagon1.add(wagon1_win_right);
+
+const wagon1_whl1 = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.05, 10), wheelMat);
+wagon1_whl1.rotation.x = Math.PI / 2;
+wagon1_whl1.position.set(-0.3, -0.25, 0.28);
+wagon1.add(wagon1_whl1);
+
+const wagon1_wheel2 = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.05, 10), wheelMat);
+wagon1_wheel2.rotation.x = Math.PI / 2;
+wagon1_wheel2.position.set(-0.3, -0.25, -0.28);
+wagon1.add(wagon1_wheel2);
+
+const wagon1_wheel3 = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.05, 10), wheelMat);
+wagon1_wheel3.rotation.x = Math.PI / 2;
+wagon1_wheel3.position.set(0.3, -0.25, 0.28);
+wagon1.add(wagon1_wheel3);
+
+const wagon1_whl4 = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.05, 10), wheelMat);
+wagon1_whl4.rotation.x = Math.PI / 2;
+wagon1_whl4.position.set(0.3, -0.25, -0.28);
+wagon1.add(wagon1_whl4);
+
+wagon1.position.set(3.5, 3.6, 0);
+scene.add(wagon1);
+
+// Green wagon 
+const wagon2 = new THREE.Group();
+
+const wagon2_body = new THREE.Mesh(
+    new THREE.BoxGeometry(1.0, 0.55, 0.5),
+    new THREE.MeshPhongMaterial({ color: 0x228833, shininess: 40 })
+);
+wagon2.add(wagon2_body);
+
+const wagon2_left_window = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.15, 0.02), train_windowMaterial);
+wagon2_left_window.position.set(0, 0.1, 0.27);
+wagon2.add(wagon2_left_window);
+
+const wagon2_right_window = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.15, 0.02), train_windowMaterial);
+wagon2_right_window.position.set(0, 0.1, -0.27);
+wagon2.add(wagon2_right_window);
+
+const wagon2_wheel1 = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.05, 10), wheelMat);
+wagon2_wheel1.rotation.x = Math.PI / 2;
+wagon2_wheel1.position.set(-0.3, -0.25, 0.28);
+wagon2.add(wagon2_wheel1);
+
+const wagon2_wheel2 = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.05, 10), wheelMat);
+wagon2_wheel2.rotation.x = Math.PI / 2;
+wagon2_wheel2.position.set(-0.3, -0.25, -0.28);
+wagon2.add(wagon2_wheel2);
+
+const wagon2_wheel3 = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.05, 10), wheelMat);
+wagon2_wheel3.rotation.x = Math.PI / 2;
+wagon2_wheel3.position.set(0.3, -0.25, 0.28);
+wagon2.add(wagon2_wheel3);
+
+const wagon2_whl4 = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.05, 10), wheelMat);
+wagon2_whl4.rotation.x = Math.PI / 2;
+wagon2_whl4.position.set(0.3, -0.25, -0.28);
+wagon2.add(wagon2_whl4);
+
+wagon2.position.set(3.5, 3.6, 0);
+scene.add(wagon2);
+
+train.position.set(3.5, 3.6, 0);
+scene.add(train);
+
 const glass_sphere = new THREE.Mesh(
     new THREE.SphereGeometry(6, 32, 32),
     new THREE.MeshPhongMaterial({ color: 0xcce5ff, shininess: 100, transparent: true, opacity: 0.35, depthWrite: false })
@@ -172,6 +315,7 @@ scene.add(glass_sphere);
 createSnow(scene, 6);
 const clock = new THREE.Clock();
 
+let trainAngle = 0;
 let snowing = true;
 window.addEventListener('keydown', (event) => {
     if (event.key === 'r') snowing = !snowing;
@@ -180,6 +324,45 @@ window.addEventListener('keydown', (event) => {
 
 function animate() {
     const deltaTime = clock.getDelta();
+    trainAngle += deltaTime * 0.5;
+// Locomotive
+train.position.x = 3.5 * Math.cos(trainAngle);
+train.position.z = 3.5 * Math.sin(trainAngle);
+train.position.y = 3.6;
+train.rotation.y = -(trainAngle + Math.PI / 2);
+
+// Blue wagon
+const angle1 = trainAngle - 0.4;
+wagon1.position.x = 3.5 * Math.cos(angle1);
+wagon1.position.z = 3.5 * Math.sin(angle1);
+wagon1.position.y = 3.6;
+wagon1.rotation.y = -(angle1 + Math.PI / 2);
+
+//Train Tracks 
+const railMat = new THREE.MeshPhongMaterial({ color: 0x111111, shininess: 80 });
+
+const rail_left = new THREE.Mesh(
+    new THREE.TorusGeometry(3.78, 0.03, 8, 64),
+    railMat
+);
+rail_left.rotation.x = Math.PI / 2;
+rail_left.position.y = 3.25;
+scene.add(rail_left);
+
+const rail_right = new THREE.Mesh(
+    new THREE.TorusGeometry(3.22, 0.03, 8, 64),
+    railMat
+);
+rail_right.rotation.x = Math.PI / 2;
+rail_right.position.y = 3.35;
+scene.add(rail_right);
+
+// Green wagon 
+const angle2 = trainAngle - 0.8;
+wagon2.position.x = 3.5 * Math.cos(angle2);
+wagon2.position.z = 3.5 * Math.sin(angle2);
+wagon2.position.y = 3.6;
+wagon2.rotation.y = -(angle2 + Math.PI / 2);
     updateSnow(deltaTime, snowing);
     updateShake(deltaTime, scene);
     renderer.render(scene, camera);
