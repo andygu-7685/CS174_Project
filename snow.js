@@ -7,9 +7,26 @@ let globeRadius = 5;
 
 // --- Shake system ---
 let shakeSnowMesh = null;
-let shakeVelocities = []; // each entry is {vx, vy, vz}
+let shakeVelocities = [];
 let shakeParticleCount = 300;
 const gravity = 3.0;
+
+// Generate soft circular sprite 
+function makeSnowflakeTexture() {
+    const canvas = document.createElement('canvas');
+    canvas.width = 32;
+    canvas.height = 32;
+    const ctx = canvas.getContext('2d');
+    const gradient = ctx.createRadialGradient(16, 16, 0, 16, 16, 16);
+    gradient.addColorStop(0, 'rgba(255,255,255,1)');
+    gradient.addColorStop(0.4, 'rgba(255,255,255,0.8)');
+    gradient.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, 32, 32);
+    return new THREE.CanvasTexture(canvas);
+}
+
+const snowSprite = makeSnowflakeTexture(); 
 
 export function createSnow(scene, radius) {
   globeRadius = radius;
@@ -36,10 +53,12 @@ export function createSnow(scene, radius) {
 
   const material = new THREE.PointsMaterial({
     color: 0xffffff,
-    size: 0.15,
+    size: 0.25,
+    map: snowSprite,          // soft circular sprite
     transparent: true,
     depthWrite: false,
-    blending: THREE.NormalBlending
+    blending: THREE.AdditiveBlending,
+    alphaTest: 0.01,          // clips square edges cleanly
   });
 
   snow = new THREE.Points(geometry, material);
@@ -68,7 +87,7 @@ export function shakeSnow(scene) {
     positions[i * 3]     = x;
     positions[i * 3 + 1] = y;
     positions[i * 3 + 2] = z;
-    // Random outward velocity in all directions
+
     const speed = 2 + Math.random() * 4;
     const theta = Math.random() * Math.PI * 2;
     const phi = Math.random() * Math.PI;
@@ -84,10 +103,12 @@ export function shakeSnow(scene) {
 
   const material = new THREE.PointsMaterial({
     color: 0xffffff,
-    size: 0.2,
+    size: 0.3,
+    map: snowSprite,          // same soft circular sprite 
     transparent: true,
     depthWrite: false,
-    blending: THREE.AdditiveBlending
+    blending: THREE.AdditiveBlending,
+    alphaTest: 0.01,          // clips square edges cleanly
   });
 
   shakeSnowMesh = new THREE.Points(geometry, material);
@@ -105,7 +126,6 @@ export function updateShake(deltaTime, scene) {
   for (let i = 0; i < shakeParticleCount; i++) {
     if (!shakeSnowMesh.geometry.userData.isFalling[i]) continue;
 
-    // Apply gravity and move
     shakeVelocities[i].vy -= gravity * deltaTime;
     positions[i * 3]     += shakeVelocities[i].vx * deltaTime;
     positions[i * 3 + 1] += shakeVelocities[i].vy * deltaTime;
@@ -115,10 +135,9 @@ export function updateShake(deltaTime, scene) {
     const y = positions[i * 3 + 1];
     const z = positions[i * 3 + 2];
 
-    // Kill particle if it hits floor or leaves sphere — no reset
     if (y < floorY || x*x + y*y + z*z > globeRadius * globeRadius) {
       shakeSnowMesh.geometry.userData.isFalling[i] = false;
-      positions[i * 3 + 1] = -999; // hide it
+      positions[i * 3 + 1] = -999;
     } else {
       anyAlive = true;
     }
@@ -126,7 +145,6 @@ export function updateShake(deltaTime, scene) {
 
   shakeSnowMesh.geometry.attributes.position.needsUpdate = true;
 
-  // Clean up once all particles are dead
   if (!anyAlive) {
     scene.remove(shakeSnowMesh);
     shakeSnowMesh = null;
@@ -144,6 +162,8 @@ export function updateSnow(deltaTime, snowing) {
 
     if (snowing && snow.geometry.userData.isFalling[i]) {
       positions[i * 3 + 1] -= velocities[i] * deltaTime;
+      positions[i * 3] += Math.sin(Date.now() * 0.001 + i) * 0.02;
+      positions[i * 3 + 2] += Math.cos(Date.now() * 0.001 + i) * 0.02;
     }
 
     const x = positions[i * 3];

@@ -11,65 +11,177 @@ document.body.appendChild(renderer.domElement);
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.target.set(0, 5, 0);
 
-const point_light = new THREE.PointLight(0xb3d9ff, 4000, 200);
+const point_light = new THREE.PointLight(0xffffff, 3, 200);
 point_light.position.set(0, 16, 0);
 scene.add(point_light);
-const ambient_light = new THREE.AmbientLight(0x8a8a8a);
+
+const ambient_light = new THREE.AmbientLight(0xffffff, 0.6); 
 scene.add(ambient_light);
+
+// Add a directional light so the base gets hit from the side too
+const dir_light = new THREE.DirectionalLight(0xffffff, 1.0);
+dir_light.position.set(5, 10, 5);
+scene.add(dir_light);
+
+const textureLoader = new THREE.TextureLoader();
+
+const woodDiffuse = textureLoader.load('./textures/wood_diffuse.jpg');
+woodDiffuse.wrapS = THREE.RepeatWrapping;
+woodDiffuse.wrapT = THREE.RepeatWrapping;
+woodDiffuse.repeat.set(4, 2);
+
+const woodNormal = textureLoader.load('./textures/wood_normal.jpg');
+woodNormal.wrapS = THREE.RepeatWrapping;
+woodNormal.wrapT = THREE.RepeatWrapping;
+woodNormal.repeat.set(4, 2);
+
+const snowDiffuse = textureLoader.load('/textures/snow_diffuse.jpg');
+snowDiffuse.wrapS = THREE.RepeatWrapping;
+snowDiffuse.wrapT = THREE.RepeatWrapping;
+snowDiffuse.repeat.set(3, 3);
+
+const snowNormal = textureLoader.load('/textures/snow_normal.jpg');
+snowNormal.wrapS = THREE.RepeatWrapping;
+snowNormal.wrapT = THREE.RepeatWrapping;
+snowNormal.repeat.set(3, 3);
+
+const barkDiffuse = textureLoader.load('/textures/bark_diffuse.jpg');
+barkDiffuse.wrapS = THREE.RepeatWrapping;
+barkDiffuse.wrapT = THREE.RepeatWrapping;
+barkDiffuse.repeat.set(1, 2);
+
+const barkNormal = textureLoader.load('/textures/bark_normal.jpg');
+barkNormal.wrapS = THREE.RepeatWrapping;
+barkNormal.wrapT = THREE.RepeatWrapping;
+barkNormal.repeat.set(1, 2);
+
+const leavesDiffuse = textureLoader.load('/textures/forest_diffuse.jpg');
+leavesDiffuse.wrapS = THREE.RepeatWrapping;
+leavesDiffuse.wrapT = THREE.RepeatWrapping;
+leavesDiffuse.repeat.set(2, 2);
+
+const leavesNormal = textureLoader.load('/textures/forest_normal.jpg');
+leavesNormal.wrapS = THREE.RepeatWrapping;
+leavesNormal.wrapT = THREE.RepeatWrapping;
+leavesNormal.repeat.set(2, 2);
+
+const brickDiffuse = textureLoader.load('/textures/brick_diffuse.jpg');
+brickDiffuse.wrapS = THREE.RepeatWrapping;
+brickDiffuse.wrapT = THREE.RepeatWrapping;
+brickDiffuse.repeat.set(2, 2);
+
+const brickNormal = textureLoader.load('/textures/brick_normal.jpg');
+brickNormal.wrapS = THREE.RepeatWrapping;
+brickNormal.wrapT = THREE.RepeatWrapping;
+brickNormal.repeat.set(2, 2);
+
+const roofDiffuse = textureLoader.load('/textures/tiles_diffuse.jpg');
+roofDiffuse.wrapS = THREE.RepeatWrapping;
+roofDiffuse.wrapT = THREE.RepeatWrapping;
+roofDiffuse.repeat.set(2, 2);
+
+const roofNormal = textureLoader.load('/textures/tiles_normal.jpg');
+roofNormal.wrapS = THREE.RepeatWrapping;
+roofNormal.wrapT = THREE.RepeatWrapping;
+roofNormal.repeat.set(2, 2);
 
 const base = new THREE.Mesh(
     new THREE.CylinderGeometry(6, 6, 2, 32),
-    new THREE.MeshPhongMaterial({ color: 0x4d331a, shininess: 10 })
+    new THREE.MeshStandardMaterial({
+        map: woodDiffuse,        // diffuse/color map
+        normalMap: woodNormal,   // normal map
+        normalScale: new THREE.Vector2(1.5, 1.5),
+        roughness: 0.9,
+        metalness: 0.0,
+    })
 );
 base.position.y = 1;
 scene.add(base);
 
 const snow_floor = new THREE.Mesh(
     new THREE.SphereGeometry(5, 32, 32),
-    new THREE.MeshPhongMaterial({ color: 0xf8f8ff, shininess: 70 })
+    new THREE.MeshStandardMaterial({
+        map: snowDiffuse,
+        normalMap: snowNormal,
+        normalScale: new THREE.Vector2(0.8, 0.8),
+        roughness: 1.0,
+        metalness: 0.0,
+    })
 );
 snow_floor.scale.y = 0.3;
 snow_floor.position.y = 2.2;
 scene.add(snow_floor);
 
+const treeMat = new THREE.MeshStandardMaterial({
+    color: 0x4a2f1a,
+    map: barkDiffuse,
+    normalMap: barkNormal,
+    normalScale: new THREE.Vector2(1.0, 1.0),
+    roughness: 0.9,
+    metalness: 0.0,
+});
+
+const crownMat = new THREE.MeshStandardMaterial({
+    color: 0x1a4d1a,
+    map: leavesDiffuse,
+    normalMap: leavesNormal,
+    normalScale: new THREE.Vector2(1.0, 1.0),
+    roughness: 0.8,
+    metalness: 0.0,
+});
+
 const tree_base = new THREE.Mesh(
     new THREE.CylinderGeometry(0.3, 0.4, 1.6, 8),
-    new THREE.MeshPhongMaterial({ color: 0x4a2f1a, shininess: 5 })
+    treeMat
 );
 tree_base.position.set(-2.4, 3.6, 0.6);
 scene.add(tree_base);
 
 const crown = new THREE.Mesh(
     new THREE.ConeGeometry(1.6, 3.0, 7),
-    new THREE.MeshPhongMaterial({ color: 0x1a4d1a, shininess: 10 })
+    crownMat
 );
 crown.position.set(-2.4, 5.8, 0.6);
 scene.add(crown);
 
 const tree_base2 = new THREE.Mesh(
     new THREE.CylinderGeometry(0.2, 0.3, 1.5, 8),
-    new THREE.MeshPhongMaterial({ color: 0x4a2f1a, shininess: 5 })
+    treeMat  // reuse same material
 );
 tree_base2.position.set(2.4, 3.54, 0.6);
 scene.add(tree_base2);
 
 const crown2 = new THREE.Mesh(
     new THREE.ConeGeometry(1.0, 2.0, 7),
-    new THREE.MeshPhongMaterial({ color: 0x1a4d1a, shininess: 10 })
+    crownMat  // reuse same material
 );
 crown2.position.set(2.4, 4.8, 0.6);
 scene.add(crown2);
 
 const house_walls = new THREE.Mesh(
     new THREE.BoxGeometry(1.6, 1.2, 1.6),
-    new THREE.MeshPhongMaterial({ color: 0xE3890E, shininess: 5 })
+    new THREE.MeshStandardMaterial({
+        color: 0xE3890E,
+        map: brickDiffuse,
+        normalMap: brickNormal,
+        normalScale: new THREE.Vector2(1.0, 1.0),
+        roughness: 0.9,
+        metalness: 0.0,
+    })
 );
 house_walls.position.set(0, 4.2, 0);
 scene.add(house_walls);
 
 const house_roof = new THREE.Mesh(
     new THREE.ConeGeometry(1.4, 1.0, 4),
-    new THREE.MeshPhongMaterial({ color: 0xaa0000, shininess: 5 })
+    new THREE.MeshStandardMaterial({
+        color: 0xaa0000,
+        map: roofDiffuse,
+        normalMap: roofNormal,
+        normalScale: new THREE.Vector2(1.0, 1.0),
+        roughness: 0.8,
+        metalness: 0.0,
+    })
 );
 house_roof.position.set(0, 5.3, 0);
 house_roof.rotation.y = Math.PI / 4;
