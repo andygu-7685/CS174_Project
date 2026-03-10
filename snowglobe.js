@@ -441,6 +441,9 @@ window.addEventListener('keydown', (event) => {
         if (followTrain) {
             camera.lookAt(train.position);
         }
+        else{
+            camera.position.set(0, 7, -15);
+        }
     }
 });
 
