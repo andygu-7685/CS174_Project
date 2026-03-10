@@ -11,11 +11,11 @@ document.body.appendChild(renderer.domElement);
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.target.set(0, 5, 0);
 
-const point_light = new THREE.PointLight(0xffffff, 3, 200);
+const point_light = new THREE.PointLight(0xb3d9ff, 50, 50);
 point_light.position.set(0, 16, 0);
 scene.add(point_light);
 
-const ambient_light = new THREE.AmbientLight(0xffffff, 0.6); 
+const ambient_light = new THREE.AmbientLight(0xffffff, 1.5); 
 scene.add(ambient_light);
 
 // Add a directional light so the base gets hit from the side too
@@ -294,12 +294,16 @@ train.add(train_chimney);
 // Train windows
 const train_windowMaterial = new THREE.MeshPhongMaterial({ color: 0xffcc44, emissive: 0xffaa00, emissiveIntensity: 0.3, shininess: 80 });
 const loco_win_left = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.15, 0.02), train_windowMaterial);
-loco_win_left.position.set(-0.3, 0.18, 0.27);
+loco_win_left.position.set(0.1, 0.18, 0.27);
 train.add(loco_win_left);
 
 const loco_win_right = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.15, 0.02), train_windowMaterial);
-loco_win_right.position.set(-0.3, 0.18, -0.27);
+loco_win_right.position.set(0.1, 0.18, -0.27);
 train.add(loco_win_right);
+
+const loco_win_front = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.2, 0.35), train_windowMaterial);
+loco_win_front.position.set(0.61, 0.18, 0);
+train.add(loco_win_front);
 
 // train wheels
 const wheelMat = new THREE.MeshPhongMaterial({ color: 0x111111, shininess: 60 });
@@ -414,12 +418,26 @@ wagon2.add(wagon2_whl4);
 wagon2.position.set(3.5, 3.6, 0);
 scene.add(wagon2);
 
+const railMat = new THREE.MeshPhongMaterial({ color: 0x111111, shininess: 80 });
+const rail_left = new THREE.Mesh(new THREE.TorusGeometry(3.78, 0.03, 8, 64), railMat);
+rail_left.rotation.x = Math.PI / 2;
+rail_left.position.y = 3.25;
+scene.add(rail_left);
+
+const rail_right = new THREE.Mesh(
+    new THREE.TorusGeometry(3.22, 0.03, 8, 64),
+    railMat
+);
+rail_right.rotation.x = Math.PI / 2;
+rail_right.position.y = 3.35;
+scene.add(rail_right);
+
 train.position.set(3.5, 3.6, 0);
 scene.add(train);
 
 const glass_sphere = new THREE.Mesh(
     new THREE.SphereGeometry(6, 32, 32),
-    new THREE.MeshPhongMaterial({ color: 0xcce5ff, shininess: 100, transparent: true, opacity: 0.35, depthWrite: false })
+    new THREE.MeshPhongMaterial({ color: 0xcce5ff, shininess: 100, transparent: true, opacity: 0.15, depthWrite: false })
 );
 glass_sphere.position.y = 7;
 scene.add(glass_sphere);
@@ -449,25 +467,6 @@ wagon1.position.x = 3.5 * Math.cos(angle1);
 wagon1.position.z = 3.5 * Math.sin(angle1);
 wagon1.position.y = 3.6;
 wagon1.rotation.y = -(angle1 + Math.PI / 2);
-
-//Train Tracks 
-const railMat = new THREE.MeshPhongMaterial({ color: 0x111111, shininess: 80 });
-
-const rail_left = new THREE.Mesh(
-    new THREE.TorusGeometry(3.78, 0.03, 8, 64),
-    railMat
-);
-rail_left.rotation.x = Math.PI / 2;
-rail_left.position.y = 3.25;
-scene.add(rail_left);
-
-const rail_right = new THREE.Mesh(
-    new THREE.TorusGeometry(3.22, 0.03, 8, 64),
-    railMat
-);
-rail_right.rotation.x = Math.PI / 2;
-rail_right.position.y = 3.35;
-scene.add(rail_right);
 
 // Green wagon 
 const angle2 = trainAngle - 0.8;

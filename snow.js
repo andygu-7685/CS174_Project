@@ -160,7 +160,7 @@ export function updateSnow(deltaTime, snowing) {
 
   for (let i = 0; i < particleCount; i++) {
 
-    if (snowing && snow.geometry.userData.isFalling[i]) {
+    if (snow.geometry.userData.isFalling[i]) {
       positions[i * 3 + 1] -= velocities[i] * deltaTime;
       positions[i * 3] += Math.sin(Date.now() * 0.001 + i) * 0.02;
       positions[i * 3 + 2] += Math.cos(Date.now() * 0.001 + i) * 0.02;
@@ -187,6 +187,7 @@ export function updateSnow(deltaTime, snowing) {
         positions[i * 3 + 2] = nz;
         snow.geometry.userData.isFalling[i] = true;
       } else {
+        positions[i * 3 + 1] = -999;
         snow.geometry.userData.isFalling[i] = false;
       }
     }
