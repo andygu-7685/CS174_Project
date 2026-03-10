@@ -163,14 +163,14 @@ const tree_base2 = new THREE.Mesh(
     new THREE.CylinderGeometry(0.2, 0.3, 1.5, 8),
     treeMat  // reuse same material
 );
-tree_base2.position.set(2.4, 3.54, 0.6);
+tree_base2.position.set(1.8, 3.54, 0.6);
 scene.add(tree_base2);
 
 const crown2 = new THREE.Mesh(
     new THREE.ConeGeometry(1.0, 2.0, 7),
     crownMat  // reuse same material
 );
-crown2.position.set(2.4, 4.8, 0.6);
+crown2.position.set(1.8, 4.8, 0.6);
 scene.add(crown2);
 
 const house_walls = new THREE.Mesh(
