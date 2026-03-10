@@ -8,6 +8,21 @@ camera.position.set(0, 7, -15);
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
+
+// informational overlay
+const infoDiv = document.createElement('div');
+infoDiv.style.position = 'absolute';
+infoDiv.style.top = '10px';
+infoDiv.style.right = '10px';
+infoDiv.style.padding = '8px 12px';
+infoDiv.style.backgroundColor = 'rgba(0,0,0,0.6)';
+infoDiv.style.color = '#fff';
+infoDiv.style.fontFamily = 'sans-serif';
+infoDiv.style.fontSize = '14px';
+infoDiv.style.borderRadius = '4px';
+infoDiv.innerHTML = '<b>Controls:</b> R = toggle snow, P = follow/unfollow train';
+document.body.appendChild(infoDiv);
+
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.target.set(0, 5, 0);
 
