@@ -8,6 +8,21 @@ camera.position.set(0, 7, -15);
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
+
+// informational overlay
+const infoDiv = document.createElement('div');
+infoDiv.style.position = 'absolute';
+infoDiv.style.top = '10px';
+infoDiv.style.right = '10px';
+infoDiv.style.padding = '8px 12px';
+infoDiv.style.backgroundColor = 'rgba(0,0,0,0.6)';
+infoDiv.style.color = '#fff';
+infoDiv.style.fontFamily = 'sans-serif';
+infoDiv.style.fontSize = '14px';
+infoDiv.style.borderRadius = '4px';
+infoDiv.innerHTML = '<b>Controls:</b> R = toggle snow, P = follow/unfollow train, Space = shake snow';
+document.body.appendChild(infoDiv);
+
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.target.set(0, 5, 0);
 
@@ -447,9 +462,22 @@ const clock = new THREE.Clock();
 
 let trainAngle = 0;
 let snowing = true;
+let followTrain = false; // camera follows the train when true
+const followOffset = new THREE.Vector3(0, 1, -2); // local offset behind & above locomotive
+
 window.addEventListener('keydown', (event) => {
     if (event.key === 'r') snowing = !snowing;
     if (event.key === ' ') shakeSnow(scene);
+    if (event.key === 'p') {
+        followTrain = !followTrain;
+        controls.enabled = !followTrain;
+        if (followTrain) {
+            camera.lookAt(train.position);
+        }
+        else{
+            camera.position.set(0, 7, -15);
+        }
+    }
 });
 
 function animate() {
@@ -476,6 +504,22 @@ wagon2.position.y = 3.6;
 wagon2.rotation.y = -(angle2 + Math.PI / 2);
     updateSnow(deltaTime, snowing);
     updateShake(deltaTime, scene);
+
+    if (followTrain) {
+        const worldOffset = followOffset.clone();
+        
+        worldOffset.applyAxisAngle(new THREE.Vector3(0, 1, 0), -trainAngle);
+        camera.position.copy(train.position).add(worldOffset);
+
+        const lookAtPoint = new THREE.Vector3(
+            3.5 * Math.cos(trainAngle + 0.5), // Offset the angle forward
+            3.6,
+            3.5 * Math.sin(trainAngle + 0.5)
+        );
+        camera.lookAt(lookAtPoint);
+
+    }
+
     renderer.render(scene, camera);
     controls.update();
 }
