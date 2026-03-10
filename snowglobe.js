@@ -20,7 +20,7 @@ infoDiv.style.color = '#fff';
 infoDiv.style.fontFamily = 'sans-serif';
 infoDiv.style.fontSize = '14px';
 infoDiv.style.borderRadius = '4px';
-infoDiv.innerHTML = '<b>Controls:</b> R = toggle snow, P = follow/unfollow train';
+infoDiv.innerHTML = '<b>Controls:</b> R = toggle snow, P = follow/unfollow train, Space = shake snow';
 document.body.appendChild(infoDiv);
 
 const controls = new OrbitControls(camera, renderer.domElement);
