@@ -429,9 +429,19 @@ const clock = new THREE.Clock();
 
 let trainAngle = 0;
 let snowing = true;
+let followTrain = false; // camera follows the train when true
+const followOffset = new THREE.Vector3(0, 1, -2); // local offset behind & above locomotive
+
 window.addEventListener('keydown', (event) => {
     if (event.key === 'r') snowing = !snowing;
     if (event.key === ' ') shakeSnow(scene);
+    if (event.key === 'p') {
+        followTrain = !followTrain;
+        controls.enabled = !followTrain;
+        if (followTrain) {
+            camera.lookAt(train.position);
+        }
+    }
 });
 
 function animate() {
@@ -477,6 +487,22 @@ wagon2.position.y = 3.6;
 wagon2.rotation.y = -(angle2 + Math.PI / 2);
     updateSnow(deltaTime, snowing);
     updateShake(deltaTime, scene);
+
+    if (followTrain) {
+        const worldOffset = followOffset.clone();
+        
+        worldOffset.applyAxisAngle(new THREE.Vector3(0, 1, 0), -trainAngle);
+        camera.position.copy(train.position).add(worldOffset);
+
+        const lookAtPoint = new THREE.Vector3(
+            3.5 * Math.cos(trainAngle + 0.5), // Offset the angle forward
+            3.6,
+            3.5 * Math.sin(trainAngle + 0.5)
+        );
+        camera.lookAt(lookAtPoint);
+
+    }
+
     renderer.render(scene, camera);
     controls.update();
 }
