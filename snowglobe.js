@@ -33,7 +33,7 @@ scene.add(point_light);
 const ambient_light = new THREE.AmbientLight(0xffffff, 1.5); 
 scene.add(ambient_light);
 
-// Add a directional light so the base gets hit from the side too
+// directional light so the base gets lit from the side too
 const dir_light = new THREE.DirectionalLight(0xffffff, 1.0);
 dir_light.position.set(5, 10, 5);
 scene.add(dir_light);
@@ -127,8 +127,7 @@ snow_floor.scale.y = 0.3;
 snow_floor.position.y = 2.2;
 scene.add(snow_floor);
 
-const treeMat = new THREE.MeshStandardMaterial({
-    color: 0x4a2f1a,
+const treeMat = new THREE.MeshStandardMaterial({color: 0x4a2f1a,
     map: barkDiffuse,
     normalMap: barkNormal,
     normalScale: new THREE.Vector2(1.0, 1.0),
@@ -137,7 +136,7 @@ const treeMat = new THREE.MeshStandardMaterial({
 });
 
 const crownMat = new THREE.MeshStandardMaterial({
-    color: 0x1a4d1a,
+    color: 0x2d8a2d,
     map: leavesDiffuse,
     normalMap: leavesNormal,
     normalScale: new THREE.Vector2(1.0, 1.0),
@@ -146,32 +145,61 @@ const crownMat = new THREE.MeshStandardMaterial({
 });
 
 const tree_base = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.3, 0.4, 1.6, 8),
+    new THREE.CylinderGeometry(0.3, 0.4, 2.4, 8),
     treeMat
 );
-tree_base.position.set(-2.4, 3.6, 0.6);
+tree_base.position.set(-2.4, 4, 0.6);
 scene.add(tree_base);
 
-const crown = new THREE.Mesh(
-    new THREE.ConeGeometry(1.6, 3.0, 7),
+const crown_t1 = new THREE.Mesh(
+    new THREE.ConeGeometry(1.6, 1.2, 7),
     crownMat
 );
-crown.position.set(-2.4, 5.8, 0.6);
-scene.add(crown);
+crown_t1.position.set(-2.4, 5, 0.6);
+scene.add(crown_t1);
+
+const crown_t2 = new THREE.Mesh(
+    new THREE.ConeGeometry(1.2, 1.2, 7),
+    crownMat
+);
+crown_t2.position.set(-2.4, 5.7, 0.6);
+scene.add(crown_t2);
+
+const crown_t3 = new THREE.Mesh(
+    new THREE.ConeGeometry(0.7, 1.2, 7),
+    crownMat
+);
+crown_t3.position.set(-2.4, 6.55, 0.6);
+scene.add(crown_t3);
+
 
 const tree_base2 = new THREE.Mesh(
     new THREE.CylinderGeometry(0.2, 0.3, 1.5, 8),
-    treeMat  // reuse same material
+    treeMat  
 );
 tree_base2.position.set(1.8, 3.54, 0.6);
 scene.add(tree_base2);
 
-const crown2 = new THREE.Mesh(
-    new THREE.ConeGeometry(1.0, 2.0, 7),
-    crownMat  // reuse same material
+const crown2_t1 = new THREE.Mesh(
+    new THREE.ConeGeometry(1.0, 0.8, 7),
+    crownMat
 );
-crown2.position.set(1.8, 4.8, 0.6);
-scene.add(crown2);
+crown2_t1.position.set(1.8, 4.3, 0.6);
+scene.add(crown2_t1);
+
+const crown2_t2 = new THREE.Mesh(
+    new THREE.ConeGeometry(0.75, 0.8, 7),
+    crownMat
+);
+crown2_t2.position.set(1.8, 4.9, 0.6);
+scene.add(crown2_t2);
+
+const crown2_t3 = new THREE.Mesh(
+    new THREE.ConeGeometry(0.45, 0.8, 7),
+    crownMat
+);
+crown2_t3.position.set(1.8, 5.4, 0.6);
+scene.add(crown2_t3);
 
 const house_walls = new THREE.Mesh(
     new THREE.BoxGeometry(1.6, 1.2, 1.6),
@@ -209,7 +237,7 @@ const house_door = new THREE.Mesh(
 house_door.position.set(0, 3.86, -0.86);
 scene.add(house_door);
 
-// Door frame
+
 const doorFrame = new THREE.MeshPhongMaterial({ color: 0x00008b, shininess: 10 });
 
 const frame_top = new THREE.Mesh(new THREE.BoxGeometry(0.52, 0.06, 0.04), doorFrame);
@@ -224,35 +252,17 @@ const door_frame_right = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.64, 0.04),
 door_frame_right.position.set(0.23, 3.86, -0.82);
 scene.add(door_frame_right);
 
-// Red circle handle
-const handle = new THREE.Mesh(
+
+const door_handle = new THREE.Mesh(
     new THREE.SphereGeometry(0.05, 8, 8),
     new THREE.MeshPhongMaterial({ color: 0xff0000, shininess: 80 })
 );
-handle.position.set(-0.14, 3.86, -0.84);
-scene.add(handle);
+door_handle.position.set(-0.14, 3.86, -0.84);
+scene.add(door_handle);
 
 scene.background = new THREE.Color(0x252f33);
 
-// Snow piles
-// const snowPileMaterial = new THREE.MeshPhongMaterial({ color: 0xf0f0ff, shininess: 80 });
 
-// const pile1 = new THREE.Mesh(new THREE.SphereGeometry(0.6, 8, 8), snowPileMaterial);
-// pile1.scale.y = 0.4;
-// pile1.position.set(1.6, 3.5, 1.6);
-// scene.add(pile1);
-
-// const pile2 = new THREE.Mesh(new THREE.SphereGeometry(0.5, 8, 8), snowPileMaterial);
-// pile2.scale.y = 0.4;
-// pile2.position.set(-1.4, 3.5, -1.2);
-// scene.add(pile2);
-
-// const pile3 = new THREE.Mesh(new THREE.SphereGeometry(0.4, 8, 8), snowPileMaterial);
-// pile3.scale.y = 0.4;
-// pile3.position.set(0.6, 3.5, -1.8);
-// scene.add(pile3);
-
-// Windows
 const windowGlass = new THREE.MeshPhongMaterial({ color: 0xffcc44, shininess: 100, emissive: 0xffaa00, emissiveIntensity: 0.4 });
 const windowFrame = new THREE.MeshPhongMaterial({ color: 0x1a0a00, shininess: 10 });
 
@@ -272,33 +282,32 @@ const glass_left = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.44, 0.44), windo
 glass_left.position.set(-0.84, 4.3, 0);
 scene.add(glass_left);
 
-// Window crosses (house walls)
-const cross_v_right = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.44, 0.06), windowFrame);
-cross_v_right.position.set(0.86, 4.3, 0);
-scene.add(cross_v_right);
+// window crosses to make them look like they have 4 parts
+const vertical_bar1 = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.44, 0.025), windowFrame);
+vertical_bar1.position.set(0.86, 4.3, 0);
+scene.add(vertical_bar1);
 
-const cross_h_right = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.06, 0.44), windowFrame);
-cross_h_right.position.set(0.86, 4.3, 0);
-scene.add(cross_h_right);
+const horizontal_bar1 = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.025, 0.44), windowFrame);
+horizontal_bar1.position.set(0.86, 4.3, 0);
+scene.add(horizontal_bar1);
 
-const cross_v_left = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.44, 0.06), windowFrame);
-cross_v_left.position.set(-0.86, 4.3, 0);
-scene.add(cross_v_left);
+const vertical_bar2 = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.44, 0.025), windowFrame);
+vertical_bar2.position.set(-0.86, 4.3, 0);
+scene.add(vertical_bar2);
 
-const cross_h_left = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.06, 0.44), windowFrame);
-cross_h_left.position.set(-0.86, 4.3, 0);
-scene.add(cross_h_left);
+const horizontal_bar2 = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.025, 0.44), windowFrame);
+horizontal_bar2.position.set(-0.86, 4.3, 0);
+scene.add(horizontal_bar2);
 
 const train = new THREE.Group();
 
-//Locomotive 
+
 const locomotive = new THREE.Mesh(
     new THREE.BoxGeometry(1.2, 0.6, 0.5),
     new THREE.MeshPhongMaterial({ color: 0xcc0000, shininess: 40 })
 );
 train.add(locomotive);
 
-// Train chimney
 const train_chimney = new THREE.Mesh(
     new THREE.CylinderGeometry(0.08, 0.08, 0.4, 8),
     new THREE.MeshPhongMaterial({ color: 0x222222, shininess: 20 })
@@ -306,7 +315,6 @@ const train_chimney = new THREE.Mesh(
 train_chimney.position.set(0.35, 0.45, 0);
 train.add(train_chimney);
 
-// Train windows
 const train_windowMaterial = new THREE.MeshPhongMaterial({ color: 0xffcc44, emissive: 0xffaa00, emissiveIntensity: 0.3, shininess: 80 });
 const loco_win_left = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.15, 0.02), train_windowMaterial);
 loco_win_left.position.set(0.1, 0.18, 0.27);
@@ -320,7 +328,6 @@ const loco_win_front = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.2, 0.35), tr
 loco_win_front.position.set(0.61, 0.18, 0);
 train.add(loco_win_front);
 
-// train wheels
 const wheelMat = new THREE.MeshPhongMaterial({ color: 0x111111, shininess: 60 });
 
 const loco_wheel1 = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.05, 10), wheelMat);
