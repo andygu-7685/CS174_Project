@@ -360,7 +360,7 @@ loco_whl6.rotation.x = Math.PI / 2;
 loco_whl6.position.set(0.35, -0.25, -0.28);
 train.add(loco_whl6);
 
-// Blue Wagon
+// middle wagon
 const wagon1 = new THREE.Group();
 
 const wagon1_body = new THREE.Mesh(
@@ -400,7 +400,7 @@ wagon1.add(wagon1_whl4);
 wagon1.position.set(3.5, 3.6, 0);
 scene.add(wagon1);
 
-// Green wagon 
+// last wagon 
 const wagon2 = new THREE.Group();
 
 const wagon2_body = new THREE.Mesh(
@@ -442,7 +442,7 @@ scene.add(wagon2);
 
 const railMat = new THREE.MeshPhongMaterial({ color: 0x111111, shininess: 80 });
 const rail_left = new THREE.Mesh(new THREE.TorusGeometry(3.78, 0.03, 8, 64), railMat);
-rail_left.rotation.x = Math.PI / 2;
+rail_left.rotation.x = Math.PI /2;
 rail_left.position.y = 3.25;
 scene.add(rail_left);
 
@@ -452,14 +452,15 @@ const rail_right = new THREE.Mesh(
 );
 rail_right.rotation.x = Math.PI / 2;
 rail_right.position.y = 3.35;
-scene.add(rail_right);
+scene.add( rail_right );
 
 train.position.set(3.5, 3.6, 0);
 scene.add(train);
 
 const glass_sphere = new THREE.Mesh(
     new THREE.SphereGeometry(6, 32, 32),
-    new THREE.MeshPhongMaterial({ color: 0xcce5ff, shininess: 100, transparent: true, opacity: 0.15, depthWrite: false })
+    new THREE.MeshPhongMaterial({ color: 0xcce5ff, shininess: 100, transparent: true, 
+        opacity: 0.15, depthWrite: false })
 );
 glass_sphere.position.y = 7;
 scene.add(glass_sphere);
@@ -490,25 +491,22 @@ window.addEventListener('keydown', (event) => {
 function animate() {
     const deltaTime = clock.getDelta();
     trainAngle += deltaTime * 0.5;
-// Locomotive
 train.position.x = 3.5 * Math.cos(trainAngle);
 train.position.z = 3.5 * Math.sin(trainAngle);
 train.position.y = 3.6;
-train.rotation.y = -(trainAngle + Math.PI / 2);
+train.rotation.y = -(trainAngle + Math.PI/2);
 
-// Blue wagon
 const angle1 = trainAngle - 0.4;
 wagon1.position.x = 3.5 * Math.cos(angle1);
-wagon1.position.z = 3.5 * Math.sin(angle1);
+wagon1.position.z = 3.5 * Math.sin(angle1 );
 wagon1.position.y = 3.6;
 wagon1.rotation.y = -(angle1 + Math.PI / 2);
 
-// Green wagon 
 const angle2 = trainAngle - 0.8;
 wagon2.position.x = 3.5 * Math.cos(angle2);
 wagon2.position.z = 3.5 * Math.sin(angle2);
 wagon2.position.y = 3.6;
-wagon2.rotation.y = -(angle2 + Math.PI / 2);
+wagon2.rotation.y = -( angle2 + Math.PI / 2);
     updateSnow(deltaTime, snowing);
     updateShake(deltaTime, scene);
 
