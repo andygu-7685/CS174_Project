@@ -67,42 +67,104 @@ scene.add(house_walls);
 
 
 const house_roof = new THREE.Mesh( new THREE.ConeGeometry(0.7, 0.5, 4),
-    new THREE.MeshPhongMaterial({ color: 0x8b2500, shininess: 5 })
+    new THREE.MeshPhongMaterial({ color: 0xaa0000, shininess: 5 })
 );
 house_roof.position.set(0, 2.65, 0);
 house_roof.rotation.y = Math.PI / 4; // rotating the roof to align it with the walls walls
 scene.add(house_roof);
 
 const house_door = new THREE.Mesh(
-    new THREE.BoxGeometry(0.2, 0.32, 0.05),
+    new THREE.BoxGeometry(0.2, 0.32, 0.02),
     new THREE.MeshPhongMaterial({ color: 0x1497F5, shininess: 15 }));
 house_door.position.set(0, 1.93, -0.43);
 scene.add(house_door);
 
-const snowPileMaterial = new THREE.MeshPhongMaterial({ color: 0xf0f0ff, shininess: 80 });
+// Door frame
+const doorFrame = new THREE.MeshPhongMaterial({ color: 0x00008b, shininess: 10 });
 
-const pile1 = new THREE.Mesh(new THREE.SphereGeometry(0.3, 8, 8), snowPileMaterial);
-pile1.scale.y = 0.4;
-pile1.position.set(0.8, 1.35, 0.8);
-scene.add(pile1);
+const frame_top = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.03, 0.02), doorFrame);
+frame_top.position.set(0, 2.105, -0.41);
+scene.add(frame_top);
 
-const pile2 = new THREE.Mesh(new THREE.SphereGeometry(0.25, 8, 8), snowPileMaterial);
-pile2.scale.y = 0.4;
-pile2.position.set(-0.7, 1.35, -0.6);
-scene.add(pile2);
+const door_frame_left = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.32, 0.02), doorFrame);
+door_frame_left.position.set(-0.115, 1.93, -0.41);
+scene.add(door_frame_left);
 
-const pile3 = new THREE.Mesh(new THREE.SphereGeometry(0.2, 8, 8), snowPileMaterial);
-pile3.scale.y = 0.4;
-pile3.position.set(0.3, 1.35, -0.9);
-scene.add(pile3);
+const door_frame_right = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.32, 0.02), doorFrame);
+door_frame_right.position.set(0.115, 1.93, -0.41);
+scene.add(door_frame_right);
 
-pile1.position.set(0.8, 1.85, 0.8);
-pile2.position.set(-0.7, 1.85, -0.6);
-pile3.position.set(0.3, 1.85, -0.9);
+// Red circle handle
+const handle = new THREE.Mesh(
+    new THREE.SphereGeometry(0.025, 8, 8),
+    new THREE.MeshPhongMaterial({ color: 0xff0000, shininess: 80 }));
+handle.position.set(-0.07, 1.93, -0.42);
+scene.add(handle);
+
+scene.background = new THREE.Color(0x252f33);
+
+
+//const snowPileMaterial = new THREE.MeshPhongMaterial({ color: 0xf0f0ff, shininess: 80 });
+
+// const pile1 = new THREE.Mesh(new THREE.SphereGeometry(0.3, 8, 8), snowPileMaterial);
+// pile1.scale.y = 0.4;
+// pile1.position.set(0.8, 1.35, 0.8);
+// scene.add(pile1);
+
+// const pile2 = new THREE.Mesh(new THREE.SphereGeometry(0.25, 8, 8), snowPileMaterial);
+// pile2.scale.y = 0.4;
+// pile2.position.set(-0.7, 1.35, -0.6);
+// scene.add(pile2);
+
+// const pile3 = new THREE.Mesh(new THREE.SphereGeometry(0.2, 8, 8), snowPileMaterial);
+// pile3.scale.y = 0.4;
+// pile3.position.set(0.3, 1.35, -0.9);
+// scene.add(pile3);
+
+// pile1.position.set(0.8, 1.75, 0.8);
+// pile2.position.set(-0.7, 1.75, -0.6);
+// pile3.position.set(0.3, 1.75, -0.9);
+
+const windowGlass = new THREE.MeshPhongMaterial({ color: 0xffcc44, shininess: 100, emissive: 0xffaa00, emissiveIntensity: 0.4 });
+const windowFrame = new THREE.MeshPhongMaterial({ color: 0x1a0a00, shininess: 10 });
+
+const frame_right = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.28, 0.28), windowFrame);
+frame_right.position.set(0.41, 2.15, 0);
+scene.add(frame_right);
+
+const glass_right = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.22, 0.22), windowGlass);
+glass_right.position.set(0.42, 2.15, 0);
+scene.add(glass_right);
+
+const frame_left = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.28, 0.28), windowFrame);
+frame_left.position.set(-0.41, 2.15, 0);
+scene.add(frame_left);
+
+const glass_left = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.22, 0.22), windowGlass);
+glass_left.position.set(-0.42, 2.15, 0);
+scene.add(glass_left);
+
+// Right window cross
+const cross_v_right = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.22, 0.03), windowFrame);
+cross_v_right.position.set(0.43, 2.15, 0);
+scene.add(cross_v_right);
+
+const cross_h_right = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.03, 0.22), windowFrame);
+cross_h_right.position.set(0.43, 2.15, 0);
+scene.add(cross_h_right);
+
+// Left window cross
+const cross_v_left = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.22, 0.03), windowFrame);
+cross_v_left.position.set(-0.43, 2.15, 0);
+scene.add(cross_v_left);
+
+const cross_h_left = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.03, 0.22), windowFrame);
+cross_h_left.position.set(-0.43, 2.15, 0);
+scene.add(cross_h_left);
 
 const glass_sphere = new THREE.Mesh(
     new THREE.SphereGeometry(3, 32, 32),
-    new THREE.MeshPhongMaterial({ color: 0xcce5ff, shininess: 100, transparent: true, opacity: 0.2, depthWrite: false })
+    new THREE.MeshPhongMaterial({ color: 0xcce5ff, shininess: 100, transparent: true, opacity: 0.35, depthWrite: false })
 );
 glass_sphere.position.y = 3.5;
 scene.add(glass_sphere);

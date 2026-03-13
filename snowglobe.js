@@ -20,7 +20,7 @@ infoDiv.style.color = '#fff';
 infoDiv.style.fontFamily = 'sans-serif';
 infoDiv.style.fontSize = '14px';
 infoDiv.style.borderRadius = '4px';
-infoDiv.innerHTML = '<b>Controls:</b> R = toggle snow, P = follow/unfollow train, Space = shake snow';
+infoDiv.innerHTML = '<b>Controls:</b> M = play ambiance music, R = toggle snow, P = follow/unfollow train, Space = shake snow';
 document.body.appendChild(infoDiv);
 
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -468,6 +468,14 @@ scene.add(glass_sphere);
 createSnow(scene, 6);
 const clock = new THREE.Clock();
 
+const audio = new Audio('./let_it_snow.mp3');
+audio.loop = true;
+let audio_playing = false;
+
+const trainWhistle = new Audio('./whistle.mp3');
+trainWhistle.loop = true;
+trainWhistle.volume = 0.4;
+
 let trainAngle = 0;
 let snowing = true;
 let followTrain = false; // camera follows the train when true
@@ -481,10 +489,20 @@ window.addEventListener('keydown', (event) => {
         controls.enabled = !followTrain;
         if (followTrain) {
             camera.lookAt(train.position);
-        }
-        else{
+            trainWhistle.play(); // 🚂 start whistle
+        } else {
             camera.position.set(0, 7, -15);
+            trainWhistle.pause();       // 🚂 stop whistle
+            trainWhistle.currentTime = 0;
         }
+    }
+    if (event.key === 'm') {
+        if (audio_playing) {
+            audio.pause();
+        } else {
+            audio.play();
+        }
+        audio_playing = !audio_playing;
     }
 });
 
